@@ -1,0 +1,224 @@
+<resources>
+    <string name="app_name">MensaMinus</string>
+
+    <!-- Navigation -->
+    <string name="nav_meals">Entdecken</string>
+    <string name="nav_canteens">Mensen</string>
+    <string name="nav_settings">Filter</string>
+
+    <!-- Meals Screen -->
+    <string name="date_today">Heute</string>
+    <string name="date_tomorrow">Morgen</string>
+    <string name="empty_meals">Leider gibt es heute nichts Passendes.</string>
+    <string name="empty_meals_sub">Vielleicht Deine Filter anpassen oder einen anderen Tag wählen?</string>
+    <string name="prev_day">Vorheriger Tag</string>
+    <string name="next_day">Nächster Tag</string>
+    <string name="search">Suchen</string>
+    <string name="search_fits_filters">Passend zu Deinen Filtern</string>
+    <string name="search_other_results">Andere Ergebnisse</string>
+    <string name="evening_meals_later">Später verfügbar</string>
+    <string name="sold_out">AUSVERKAUFT</string>
+
+    <!-- Canteens Screen -->
+    <string name="active_canteens">Aktive Mensen</string>
+    <string name="inactive_canteens">Weitere Mensen (Inaktiv)</string>
+    <string name="no_meals">Keine Gerichte</string>
+    <string name="drag_indicator">Verschieben</string>
+    <string name="deactivate">Deaktivieren</string>
+    <string name="activate">Aktivieren</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="price_profile">Preis-Profil</string>
+    <string name="price_group_studi">Studi</string>
+    <string name="price_group_employee">Mitarbeiter*in</string>
+    <string name="hide_evening_before_16">Abendgerichte erst ab 16 Uhr</string>
+    <string name="hide_evening_before_16_desc">Versteckt Abendangebote in der Liste bis 16.00 Uhr.</string>
+    <string name="dietary_filters">Nahrungs-Filter</string>
+    <string name="dietary_preference">Ernährungsprofil</string>
+    <string name="dietary_all">Allesessend</string>
+    <string name="dietary_vegetarian">Vegetarisch</string>
+    <string name="dietary_vegan">Vegan</string>
+    <string name="hide_sold_out">Ausverkaufte ausblenden</string>
+    <string name="hide_sold_out_desc">Versteckt Gerichte, die für diesen Tag als ausverkauft markiert sind.</string>
+    <string name="show_scores">Score einblenden</string>
+    <string name="show_scores_desc">Zeigt den numerischen Score für die Relevanz von Gerichten</string>
+    <string name="smart_recommendations">Smart Recommendations</string>
+    <string name="notifications_title">Benachrichtigungen</string>
+    <string name="daily_match_notification">Morgendlicher Favoriten-Check</string>
+    <string name="daily_match_notification_desc">Informiert Dich morgens, wenn einer Deiner Favoriten auf dem Plan steht.</string>
+    <string name="view_scoring_db">Scoring-Datenbank einsehen</string>
+    <string name="scoring_db_title">Gelernte Schlüsselwörter</string>
+    <string name="scoring_db_empty">Die App hat noch keine Schlüsselwörter gelernt. Like oder Dislike ein paar Gerichte!</string>
+    <string name="scoring_db_positive">Positive Einflüsse</string>
+    <string name="scoring_db_negative">Negative Einflüsse</string>
+    <string name="close">Schließen</string>
+
+    <!-- Meal Detail -->
+    <string name="canteen_location">📍 %1$s</string>
+    <string name="top_match">Dein Top-Match</string>
+    <string name="good_match">Könnte Dir schmecken</string>
+    <string name="bad_match">Eher nichts für Dich</string>
+    <string name="neutral_match">Neutral</string>
+    <string name="low_match">Nicht Dein Favorit</string>
+    <string name="like_meal">Mag ich</string>
+    <string name="dislike_meal">Mag ich nicht</string>
+    <string name="category_label">Kategorie: %1$s</string>
+    <string name="co2_label">CO₂-Fußabdruck</string>
+    <string name="extra_info">Zusatzinformationen:</string>
+    <string name="other_meals_in">Weitere Gerichte in der %1$s:</string>
+
+    <!-- Canteen Detail -->
+    <string name="opening_hours_label">🕒 Öffnungszeiten</string>
+    <string name="lunch_offer">Mittagsangebot</string>
+    <string name="evening_offer">🌙 Abendangebot</string>
+    <string name="late_chip">Spät</string>
+    <string name="no_meals_day">Für diesen Tag gibt es keine eingetragenen Gerichte.</string>
+    <string name="no_website">Für diese Mensa ist keine Website hinterlegt.</string>
+    <string name="loading_hours">Lade Öffnungszeiten...</string>
+    <string name="no_hours_found">Keine Öffnungszeiten auf der Website gefunden.</string>
+    <string name="no_website_found">Keine Website vorhanden, Öffnungszeiten unbekannt.</string>
+    <string name="filtered_out_meals">Gerichte, die Deinen Filtern widersprechen</string>
+
+    <!-- Error Handling -->
+    <string name="error_no_internet">Keine Internetverbindung. Bitte prüfe Deine Verbindung.</string>
+    <string name="error_server">Der Server antwortet nicht. Bitte versuche es später erneut.</string>
+    <string name="error_unknown">Ein unerwarteter Fehler ist aufgetreten.</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="price_not_available">k.A.</string>
+
+    <!-- Support & Donation -->
+    <string name="support_app">App unterstützen</string>
+    <string name="donation_title">Kaffee spendieren</string>
+    <string name="donation_desc">Dir gefällt die App? Unterstütze die Entwicklung mit einer kleinen Spende.</string>
+    <string name="donate_action">Spenden (Externer Link)</string>
+
+    <!-- Opening Hours Status -->
+    <string name="closed">Geschlossen</string>
+    <string name="closes_in">Schließt in %1$d Min</string>
+    <string name="closes_at">Schließt %1$s</string>
+    <string name="opens_in">Öffnet in %1$d Min</string>
+    <string name="opens_at">Öffnet %1$s</string>
+
+    <!-- Allergies -->
+    <string name="allergies_title">Allergien &amp; Unverträglichkeiten</string>
+    <string name="allergies_desc">Markiere Inhaltsstoffe, die Du meiden möchtest:</string>
+    <string name="allergies_show_all">Alle anzeigen</string>
+    <string name="allergies_hide">Ausblenden</string>
+    <string name="allergies_active">%1$d ausgewählt</string>
+
+    <string name="allergy_gluten">Gluten / Weizen</string>
+    <string name="allergy_lactose">Laktose / Milch</string>
+    <string name="allergy_eggs">Eier</string>
+    <string name="allergy_peanuts">Erdnüsse</string>
+    <string name="allergy_nuts">Nüsse / Schalenfrüchte</string>
+    <string name="allergy_soy">Soja</string>
+    <string name="allergy_fish">Fisch</string>
+    <string name="allergy_crustaceans">Krebstiere</string>
+    <string name="allergy_celery">Sellerie</string>
+    <string name="allergy_mustard">Senf</string>
+    <string name="allergy_sesame">Sesam</string>
+    <string name="allergy_sulphites">Sulfite</string>
+    <string name="allergy_lupin">Lupine</string>
+    <string name="allergy_molluscs">Weichtiere</string>
+    <string name="allergy_alcohol">Alkohol</string>
+    <string name="allergy_pork">Schweinefleisch</string>
+    <string name="allergy_beef">Rindfleisch</string>
+    <string name="allergy_lab">Tierisches Lab</string>
+    <string name="allergy_gelatine">Gelatine</string>
+    <string name="allergy_garlic">Knoblauch</string>
+    <string name="allergy_additives">Zusatzstoffe</string>
+
+
+    <!-- Cache -->
+    <string name="cache_old_hint">Daten sind %1$d Minuten alt</string>
+    <string name="cache_offline_hint">Offline: Daten von %1$s</string>
+
+    <!-- Disclaimer -->
+    <string name="disclaimer_title">Hinweis</string>
+    <string name="disclaimer_text">Die Allergie- und Ernährungsfilter basieren auf den Daten der Mensa und automatischen Filtern. Es gibt keine Gewähr für die Richtigkeit oder Vollständigkeit. Bei schweren Allergien frage bitte immer das Personal vor Ort.</string>
+
+    <!-- Dietary Banners -->
+    <string name="dietary_banner_any_title">Allesessend</string>
+    <string name="dietary_banner_any_desc">Wusstest Du, dass für ein Kilo Fleisch bis zu 15.000 Liter Wasser verbraucht werden? Vielleicht ist heute ein guter Tag, mal eine der leckeren pflanzlichen Alternativen ohne Tierleid zu probieren :)</string>
+    <string name="dietary_banner_vegetarian_title">Vegetarisch</string>
+    <string name="dietary_banner_vegetarian_desc">Schön, dass Du kein Fleisch isst! Aber wusstest Du, dass die Produktion von Käse und Eiern oft einen ähnlichen ökologischen Fußabdruck und Tierleid erzeugt?</string>
+    <string name="dietary_banner_vegan_title">Vegan</string>
+    <string name="dietary_banner_vegan_desc">Danke, dass Du Dich für Mitgefühl und eine nachhaltige Zukunft entscheidest :)</string>
+
+    <!-- Dietary Badges -->
+    <string name="badge_vegan">Vegan</string>
+    <string name="badge_vegetarian">Vegetarisch</string>
+    <string name="badge_beef">Rind</string>
+    <string name="badge_pork">Schwein</string>
+    <string name="badge_poultry">Geflügel</string>
+    <string name="badge_fish">Fisch</string>
+
+    <!-- Language Settings -->
+    <string name="language">Sprache</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_english">Englisch</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Mensa Highlights</string>
+    <string name="notification_channel_desc">Benachrichtigungen über Deine Lieblingsgerichte</string>
+    <string name="notification_match_title">Dein Lieblingsessen ist heute dabei! 😋</string>
+    <string name="notification_match_single">%1$s in %2$s</string>
+    <string name="notification_match_multiple">%1$d Deiner Favoriten stehen heute auf dem Plan!</string>
+    <string name="notification_permission_required">Benachrichtigungen sind deaktiviert. Bitte aktiviere sie in den System-Einstellungen.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Moin! Willkommen bei MensaMinus.</string>
+    <string name="onboarding_welcome_desc">Lass uns Deine Einstellungen finden.</string>
+    <string name="onboarding_lang_title">Sprache wählen</string>
+    <string name="onboarding_lang_desc">Wähle die Sprache, in der Du die App nutzen möchtest.</string>
+    <string name="onboarding_canteen_title">Wo isst Du am liebsten?</string>
+    <string name="onboarding_canteen_desc">Wähle Mensen aus, deren Gerichte Du sehen möchtest. Die Liste kannst Du später jederzeit anpassen.</string>
+    <string name="onboarding_canteen_deselect_all">Alle abwählen</string>
+    <string name="onboarding_prefs_title">Dein Geschmack, Dein Preis.</string>
+    <string name="onboarding_prefs_desc">Gib an, welche Preise für Dich gelten und wie Du gerne isst.</string>
+    <string name="onboarding_allergies_title">Allergene &amp; Unverträglichkeiten</string>
+    <string name="onboarding_allergies_desc">Gibt es Inhaltsstoffe, die Du meiden möchtest? Die App versucht, diese zu filtern.</string>
+    <string name="onboarding_fav_title">Highlights nicht verpassen.</string>
+    <string name="onboarding_features_title">Praktische Funktionen</string>
+    <string name="onboarding_features_desc">Aktiviere hilfreiche Funktionen, um das Beste aus der App rauszuholen.</string>
+    <string name="onboarding_fav_desc">Markiere Deine Favoriten mit einem Like. Die App sagt Dir morgens Bescheid, wenn sie auf dem Plan stehen.</string>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_back">Zurück</string>
+    <string name="onboarding_start">Starten</string>
+    <string name="onboarding_skip">Überspringen</string>
+
+    <string name="about_and_licenses">Über &amp; Open Source Lizenzen</string>
+    <string name="licenses_dialog_title">Open Source &amp; Credits</string>
+    <string name="licenses_dialog_text">MensaMinus ist freie Software (FOSS).\n\nDatenquelle:\n• Studentenwerk Dresden\n\nOpen-Source-Bibliotheken:\n• AndroidX &amp; Jetpack Libraries (Apache 2.0)\n• Kotlin Coroutines (Apache 2.0)\n• Retrofit &amp; Gson (Apache 2.0)\n• Coil Compose (Apache 2.0)\n• Jsoup (MIT)\n\nEntwickelt von Björn Tammo Wagenknecht unter der Apache License 2.0.</string>
+
+    <!-- Coach Marks -->
+    <string name="tip_meals_title">Gericht-Details</string>
+    <string name="tip_headline">Tipp</string>
+    <string name="tip_meals_desc">Tippe auf ein Gericht für Details oder Bilder. Mit einem (Dis)like lernt die App die Reihenfolge nach Deinem Geschmack.</string>
+    <string name="tip_canteens_title">Mensen sortieren</string>
+    <string name="tip_canteens_desc">Halte das Icon links gedrückt, um Deine Mensen nach Priorität zu ordnen.</string>
+    <string name="tip_settings_title">Filter &amp; Profil</string>
+    <string name="tip_settings_desc">Hier kannst Du die Einstellungen jederzeit ändern.</string>
+    <string name="got_it">Verstanden</string>
+
+    <!-- Dev Mode -->
+    <string name="dev_reset_onboarding">Onboarding zurücksetzen</string>
+    <string name="dev_trigger_notification">Test-Benachrichtigung senden</string>
+    <string name="app_version">Version %1$s</string>
+
+    <!-- NFC Campus Card -->
+    <string name="nfc_campus_card">Campuscard</string>
+    <string name="nfc_balance_title">Aktuelles Guthaben</string>
+    <string name="nfc_last_scan">Letzter Scan: %1$s</string>
+    <string name="nfc_tap_hint">Halte Deine Karte jederzeit während die App läuft an Dein Smartphone, um das Guthaben abzufragen.</string>
+    <string name="nfc_enable_reader">NFC-Kartenleser aktivieren</string>
+    <string name="nfc_enable_reader_desc">Ermöglicht das Auslesen des Campuscard-Guthabens mittels NFC.</string>
+    <string name="nfc_not_supported">NFC wird von Deinem Gerät nicht unterstützt.</string>
+    <string name="nfc_disabled_hint">NFC ist deaktiviert. Bitte in den Systemeinstellungen aktivieren.</string>
+    <string name="nfc_clear_balance">Scan-Historie löschen</string>
+    <string name="nfc_scan_success">Karte erfolgreich gelesen!</string>
+    <string name="nfc_onboarding_title">Mensa-Guthaben</string>
+    <string name="nfc_onboarding_desc">Du kannst Dein Mensa-Guthaben direkt in der App sehen, indem Du Deine Campuscard an die Rückseite Deines Handys hältst.</string>
+
+</resources>
