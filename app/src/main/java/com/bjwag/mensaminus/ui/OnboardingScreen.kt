@@ -720,8 +720,7 @@ private fun PreferencePage(
         }
         
         Spacer(Modifier.height(32.dp))
-        
-        // Dietary Pref
+
         Text(
             stringResource(R.string.dietary_preference),
             style = MaterialTheme.typography.titleMedium,
