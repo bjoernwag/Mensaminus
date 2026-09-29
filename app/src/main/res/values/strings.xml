@@ -21,7 +21,7 @@
 
     <!-- Canteens Screen -->
     <string name="active_canteens">Aktive Mensen</string>
-    <string name="inactive_canteens">Weitere Mensen (Inaktiv)</string>
+    <string name="inactive_canteens">Weitere Mensen (inaktiv)</string>
     <string name="no_meals">Keine Gerichte</string>
     <string name="drag_indicator">Verschieben</string>
     <string name="deactivate">Deaktivieren</string>

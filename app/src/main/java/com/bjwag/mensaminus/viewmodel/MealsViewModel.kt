@@ -50,7 +50,7 @@ class MealsViewModel(
         meals.map { item ->
             item.copy(
                 score = MealMetadataEngine.calculateRelevanceScore(
-                    mealName = item.meal.mainName,
+                    mealName = item.meal.name,
                     canteenRank = activeIds.indexOf(item.canteen.id),
                     likedMeals = likedMeals,
                     dislikedMeals = dislikedMeals,

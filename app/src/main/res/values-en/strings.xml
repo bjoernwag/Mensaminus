@@ -21,7 +21,7 @@
 
     <!-- Canteens Screen -->
     <string name="active_canteens">Active Canteens</string>
-    <string name="inactive_canteens">Other Canteens (Inactive)</string>
+    <string name="inactive_canteens">Other Canteens (inactive)</string>
     <string name="no_meals">No meals</string>
     <string name="drag_indicator">Move</string>
     <string name="deactivate">Deactivate</string>
@@ -75,7 +75,7 @@
     <string name="late_chip">Late</string>
     <string name="no_meals_day">No meals listed for this day.</string>
     <string name="no_website">No website found for this canteen.</string>
-    <string name="loading_hours">Loading opening hours...</string>
+    <string name="loading_hours">Loading opening hours…</string>
     <string name="no_hours_found">No opening hours found on the website.</string>
     <string name="no_website_found">No website available, opening hours unknown.</string>
     <string name="filtered_out_meals">Dishes that conflict with your filters</string>

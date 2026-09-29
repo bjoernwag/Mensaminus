@@ -9,16 +9,25 @@ object MealMetadataEngine {
     private val PARENTHESIS_REGEX = Regex("\\s*\\([^)]*\\)")
     private val CO2_REGEX = Regex("([\\d.,]+)\\s*g\\s*CO₂-Äquivalente", RegexOption.IGNORE_CASE)
 
+    private fun cleanName(name: String): String = name.replace(PARENTHESIS_REGEX, "").trim()
+
     fun getMainName(name: String): String {
-        return name.split(SPLIT_REGEX).first().trim().replace(PARENTHESIS_REGEX, "")
+        val cleaned = cleanName(name)
+        if (cleaned.isBlank()) return name
+
+        val parts = cleaned.split(SPLIT_REGEX)
+        return parts.first().trim()
     }
 
     fun getSideDishes(name: String): String {
-        val parts = name.split(SPLIT_REGEX)
-        if (parts.size > 1) {
-            val match = SPLIT_REGEX.find(name)
-            val word = match?.value ?: ""
-            return "$word ${parts.drop(1).joinToString(" ")}".trim().replace(PARENTHESIS_REGEX, "")
+        val cleaned = cleanName(name)
+        val main = getMainName(name)
+
+        if (cleaned.startsWith(main, ignoreCase = true)) {
+            val remainder = cleaned.substring(main.length).trim()
+            if (remainder.isNotBlank()) {
+                return remainder
+            }
         }
         return ""
     }

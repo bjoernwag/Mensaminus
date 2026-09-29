@@ -54,7 +54,7 @@ object MealFilterEngine {
         }.map { item ->
             item.copy(
                 score = MealMetadataEngine.calculateRelevanceScore(
-                    mealName = item.meal.mainName,
+                    mealName = item.meal.name,
                     canteenRank = activeIds.indexOf(item.canteen.id),
                     likedMeals = settings.likedMeals,
                     dislikedMeals = settings.dislikedMeals,
@@ -72,7 +72,7 @@ object MealFilterEngine {
 
     fun extractKeywords(mealName: String): Set<String> {
         //TODO maybe centralise?
-        val stopwords = setOf("mit", "und", "oder", "in", "an", "auf", "aus", "dazu", "von", "im", "vom", "der", "die", "das", "ein", "eine")
+        val stopwords = setOf("mit", "und", "oder", "in", "an", "auf", "aus", "dazu", "von", "im", "vom", "der", "die", "das", "ein", "eine", "einen", "einem", "einer", "eines", "sowie", "inkl", "inklusive")
 
         return mealName.lowercase()
             .replace(Regex("[^a-zäöüß]"), " ")

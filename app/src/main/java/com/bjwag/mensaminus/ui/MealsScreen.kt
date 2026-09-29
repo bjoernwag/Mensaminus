@@ -321,7 +321,7 @@ fun CompactMealCard(
             .alpha(alpha)
             .clickable(role = Role.Button) { onClick() }
             .semantics(mergeDescendants = true) {
-                contentDescription = "${mealItem.canteen.name}, ${meal.category}: ${meal.mainName}. " +
+                contentDescription = "${mealItem.canteen.name}, ${meal.category}: ${meal.mainName} ${meal.sideDishes}. " +
                         (if (meal.isSoldOut) "Ausverkauft. " else "$priceText. ") +
                         (status?.text ?: "")
             },
@@ -398,9 +398,18 @@ fun CompactMealCard(
                         text = meal.mainName,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                    if (meal.sideDishes.isNotEmpty()) {
+                        Text(
+                            text = meal.sideDishes,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
 
                 Row(
