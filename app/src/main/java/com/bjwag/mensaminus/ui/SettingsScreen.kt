@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,6 +44,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, mainViewModel: MainView
     var showLanguageSheet by remember { mutableStateOf(false) }
     var showPriceSheet by remember { mutableStateOf(false) }
     var showLicensesDialog by remember { mutableStateOf(false) }
+    var showNfcHelpDialog by remember { mutableStateOf(false) }
     var allergiesExpanded by remember { mutableStateOf(false) }
 
     LazyColumn(
@@ -280,24 +282,84 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, mainViewModel: MainView
         }
 
         item {
-            SettingsGroup(title = stringResource(R.string.nfc_campus_card)) {
+            SettingsGroup(
+                title = stringResource(R.string.nfc_campus_card),
+                trailingHeader = {
+                    IconButton(
+                        onClick = { showNfcHelpDialog = true },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.HelpOutline,
+                            contentDescription = stringResource(R.string.nfc_help_dialog_title),
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            ) {
                 val isNfcSupported = mainViewModel.isNfcSupported
-                SettingsSwitchItem(
-                    icon = Icons.Default.Nfc,
-                    title = stringResource(R.string.nfc_enable_reader),
-                    description = if (isNfcSupported) stringResource(R.string.nfc_enable_reader_desc) else stringResource(R.string.nfc_not_supported),
-                    checked = settings.nfcReaderEnabled && isNfcSupported,
-                    onCheckedChange = { mainViewModel.setNfcReaderEnabled(it) },
-                    enabled = isNfcSupported
-                )
-                
-                if (settings.lastScannedBalance != null && isNfcSupported) {
-                    SettingsClickableItem(
-                        icon = Icons.Default.Delete,
-                        title = stringResource(R.string.nfc_clear_balance),
-                        value = "",
-                        onClick = { mainViewModel.clearCardBalance() }
+                if (!isNfcSupported) {
+                    Text(
+                        text = stringResource(R.string.nfc_not_supported),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
                     )
+                } else {
+                    val nfcOptions = listOf(
+                        com.bjwag.mensaminus.store.NfcMode.MANUAL to (stringResource(R.string.nfc_mode_manual) + " (" + stringResource(R.string.recommended) + ")" to stringResource(R.string.nfc_mode_manual_desc)),
+                        com.bjwag.mensaminus.store.NfcMode.ALWAYS to (stringResource(R.string.nfc_mode_always) to stringResource(R.string.nfc_mode_always_desc)),
+                        com.bjwag.mensaminus.store.NfcMode.OFF to (stringResource(R.string.nfc_mode_off) to stringResource(R.string.nfc_mode_off_desc))
+                    )
+
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                        nfcOptions.forEachIndexed { index, (mode, labelAndDesc) ->
+                            val (label, desc) = labelAndDesc
+                            val isSelected = settings.nfcMode == mode
+                            
+                            ListItem(
+                                headlineContent = {
+                                    Text(
+                                        text = label,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                                    )
+                                },
+                                supportingContent = {
+                                    Text(
+                                        text = desc,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                leadingContent = {
+                                    RadioButton(
+                                        selected = isSelected,
+                                        onClick = null
+                                    )
+                                },
+                                modifier = Modifier.clickable { mainViewModel.setNfcMode(mode) }
+                            )
+
+                            if (index < nfcOptions.size - 1) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                                )
+                            }
+                        }
+                    }
+
+                    if (settings.lastScannedBalance != null) {
+                        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
+                        SettingsClickableItem(
+                            icon = Icons.Default.Delete,
+                            title = stringResource(R.string.nfc_clear_balance),
+                            value = "",
+                            onClick = { mainViewModel.clearCardBalance() }
+                        )
+                    }
                 }
             }
         }
@@ -366,6 +428,31 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, mainViewModel: MainView
             },
             confirmButton = {
                 TextButton(onClick = { showLicensesDialog = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
+    }
+
+    if (showNfcHelpDialog) {
+        AlertDialog(
+            onDismissRequest = { showNfcHelpDialog = false },
+            icon = {
+                Icon(
+                    Icons.AutoMirrored.Filled.HelpOutline,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            title = { Text(stringResource(R.string.nfc_help_dialog_title)) },
+            text = {
+                Text(
+                    text = stringResource(R.string.nfc_help_dialog_text),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showNfcHelpDialog = false }) {
                     Text(stringResource(R.string.close))
                 }
             }
@@ -531,17 +618,27 @@ fun <T> ModernSelectionSheet(
 fun SettingsGroup(
     title: String, 
     titleClickable: (() -> Unit)? = null,
+    trailingHeader: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+        Row(
             modifier = Modifier
-                .padding(start = 8.dp, bottom = 8.dp)
-                .then(if (titleClickable != null) Modifier.clickable { titleClickable() } else Modifier)
-        )
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = if (titleClickable != null) Modifier.clickable { titleClickable() } else Modifier
+            )
+            if (trailingHeader != null) {
+                trailingHeader()
+            }
+        }
         ElevatedCard(
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),

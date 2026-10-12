@@ -24,7 +24,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.*
+import com.bjwag.mensaminus.store.NfcMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -141,8 +143,8 @@ fun OnboardingScreen(
                                 OnboardingStep.Favorites -> FavoritePage(
                                     enabled = settings.morningMatchNotification,
                                     onToggle = { settingsViewModel.setMorningMatchNotification(it) },
-                                    nfcEnabled = settings.nfcReaderEnabled,
-                                    onToggleNfc = { mainViewModel.setNfcReaderEnabled(it) },
+                                    nfcMode = settings.nfcMode,
+                                    onSetNfcMode = { mainViewModel.setNfcMode(it) },
                                     isNfcSupported = mainViewModel.isNfcSupported
                                 )
                             }
@@ -834,10 +836,12 @@ private fun AllergensPage(
 private fun FavoritePage(
     enabled: Boolean,
     onToggle: (Boolean) -> Unit,
-    nfcEnabled: Boolean,
-    onToggleNfc: (Boolean) -> Unit,
+    nfcMode: NfcMode,
+    onSetNfcMode: (NfcMode) -> Unit,
     isNfcSupported: Boolean
 ) {
+    var showNfcHelpDialog by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -865,16 +869,142 @@ private fun FavoritePage(
 
         Spacer(Modifier.height(20.dp))
 
-        ModernFeatureSwitch(
-            title = stringResource(R.string.nfc_onboarding_title),
-            desc = if (isNfcSupported) stringResource(R.string.nfc_onboarding_desc) 
-                   else stringResource(R.string.nfc_not_supported),
-            icon = Icons.Default.Nfc,
-            checked = nfcEnabled,
-            onCheckedChange = onToggleNfc,
-            color = MaterialTheme.colorScheme.tertiary,
-            enabled = isNfcSupported
+        NfcModeCard(
+            currentMode = nfcMode,
+            onSetMode = onSetNfcMode,
+            isNfcSupported = isNfcSupported,
+            onOpenHelp = { showNfcHelpDialog = true }
         )
+    }
+
+    if (showNfcHelpDialog) {
+        AlertDialog(
+            onDismissRequest = { showNfcHelpDialog = false },
+            icon = {
+                Icon(
+                    Icons.AutoMirrored.Filled.HelpOutline,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            title = { Text(stringResource(R.string.nfc_help_dialog_title)) },
+            text = {
+                Text(
+                    text = stringResource(R.string.nfc_help_dialog_text),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showNfcHelpDialog = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun NfcModeCard(
+    currentMode: NfcMode,
+    onSetMode: (NfcMode) -> Unit,
+    isNfcSupported: Boolean,
+    onOpenHelp: () -> Unit
+) {
+    val color = MaterialTheme.colorScheme.tertiary
+
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    modifier = Modifier.size(48.dp),
+                    shape = CircleShape,
+                    color = color,
+                    shadowElevation = 2.dp
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            Icons.Default.Nfc,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        stringResource(R.string.nfc_onboarding_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        if (isNfcSupported) stringResource(R.string.nfc_onboarding_desc)
+                        else stringResource(R.string.nfc_not_supported),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        lineHeight = 16.sp
+                    )
+                }
+
+                if (isNfcSupported) {
+                    IconButton(onClick = onOpenHelp) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.HelpOutline,
+                            contentDescription = stringResource(R.string.nfc_help_dialog_title),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+
+            if (isNfcSupported) {
+                Spacer(Modifier.height(16.dp))
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                Spacer(Modifier.height(8.dp))
+
+                val options = listOf(
+                    NfcMode.MANUAL to (stringResource(R.string.nfc_mode_manual) + " (" + stringResource(R.string.recommended) + ")"),
+                    NfcMode.ALWAYS to stringResource(R.string.nfc_mode_always),
+                    NfcMode.OFF to stringResource(R.string.nfc_mode_off)
+                )
+
+                options.forEach { (mode, label) ->
+                    val isSelected = currentMode == mode
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onSetMode(mode) }
+                            .padding(vertical = 8.dp, horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = isSelected,
+                            onClick = null
+                        )
+                        Spacer(Modifier.width(12.dp))
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                            color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -149,11 +149,23 @@ fun MainAppScreen(
                             },
                             actions = {
                                 if (isMealsScreen) {
-                                    IconButton(onClick = { showNfcInfoDialog = true }) {
+                                    IconButton(onClick = {
+                                        when (settings.nfcMode) {
+                                            com.bjwag.mensaminus.store.NfcMode.MANUAL -> mainViewModel.startManualNfcScan()
+                                            com.bjwag.mensaminus.store.NfcMode.ALWAYS -> {
+                                                if (settings.lastScannedBalance != null) {
+                                                    mainViewModel.showNfcBalance()
+                                                } else {
+                                                    showNfcInfoDialog = true
+                                                }
+                                            }
+                                            com.bjwag.mensaminus.store.NfcMode.OFF -> showNfcInfoDialog = true
+                                        }
+                                    }) {
                                         Icon(
                                             imageVector = Icons.Default.CreditCard, 
                                             contentDescription = stringResource(R.string.nfc_campus_card),
-                                            tint = if (settings.nfcReaderEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                            tint = if (settings.nfcMode != com.bjwag.mensaminus.store.NfcMode.OFF) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                     IconButton(onClick = { mealsViewModel.setSearchActive(true) }) {
@@ -289,27 +301,78 @@ fun MainAppScreen(
                         text = when {
                             !nfcSupported -> stringResource(R.string.nfc_not_supported)
                             !nfcEnabled -> stringResource(R.string.nfc_disabled_hint)
-                            !settings.nfcReaderEnabled -> stringResource(R.string.nfc_enable_reader_desc)
+                            settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.OFF -> stringResource(R.string.nfc_info_mode_off_hint)
                             else -> stringResource(R.string.nfc_tap_hint)
                         }
                     )
                     
-                    if (nfcSupported && nfcEnabled && !settings.nfcReaderEnabled) {
+                    if (nfcSupported && nfcEnabled && settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.OFF) {
                         Spacer(Modifier.height(16.dp))
                         Button(
                             onClick = { 
-                                mainViewModel.setNfcReaderEnabled(true)
+                                mainViewModel.setNfcMode(com.bjwag.mensaminus.store.NfcMode.MANUAL)
+                                showNfcInfoDialog = false
+                                mainViewModel.startManualNfcScan()
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.nfc_mode_manual) + " (" + stringResource(R.string.recommended) + ")")
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        OutlinedButton(
+                            onClick = { 
+                                mainViewModel.setNfcMode(com.bjwag.mensaminus.store.NfcMode.ALWAYS)
                                 showNfcInfoDialog = false
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.nfc_enable_reader))
+                            Text(stringResource(R.string.nfc_mode_always))
                         }
                     }
                 }
             },
             confirmButton = {
                 TextButton(onClick = { showNfcInfoDialog = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
+    }
+
+    if (mainViewModel.showManualNfcScanDialog) {
+        AlertDialog(
+            onDismissRequest = { mainViewModel.dismissManualNfcScan() },
+            icon = {
+                Icon(
+                    Icons.Default.Nfc,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(36.dp)
+                )
+            },
+            title = {
+                Text(
+                    stringResource(R.string.nfc_manual_scan_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.nfc_manual_scan_desc),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { mainViewModel.dismissManualNfcScan() }) {
                     Text(stringResource(R.string.close))
                 }
             }

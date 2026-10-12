@@ -218,5 +218,18 @@
     <string name="nfc_scan_success">Card read successfully!</string>
     <string name="nfc_onboarding_title">Campus Card Balance</string>
     <string name="nfc_onboarding_desc">You can see your canteen balance directly in the app by holding your Campus Card against the back of your phone.</string>
+    <string name="nfc_mode_off">Off</string>
+    <string name="nfc_mode_off_desc">NFC card reader is disabled.</string>
+    <string name="nfc_mode_manual">On Click</string>
+    <string name="nfc_mode_manual_desc">Only reads the card after clicking the icon.</string>
+    <string name="nfc_mode_always">Always Active</string>
+    <string name="nfc_mode_always_desc">Automatically reads card anytime the app is open.</string>
+    <string name="nfc_manual_scan_title">Scan Campus Card</string>
+    <string name="nfc_manual_scan_desc">Hold your Campus Card against the back of your smartphone now.</string>
+    <string name="nfc_help_dialog_title">NFC Card Reader Modes</string>
+    <string name="nfc_help_dialog_text">Why are there different modes?\n\n• On Click: Only activates the reader briefly when you tap the card icon.\n\n• Always Active: Automatically detects the card whenever the app is open.\n\n• Off: The card reader is disabled.</string>
+    <string name="nfc_mode_select_title">Select NFC Mode</string>
+    <string name="nfc_info_mode_off_hint">The NFC card reader is currently disabled. Would you like to select a mode?</string>
+    <string name="recommended">Recommended</string>
 
 </resources>

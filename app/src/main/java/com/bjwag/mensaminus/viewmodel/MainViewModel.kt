@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bjwag.mensaminus.api.MensaRepository
 import com.bjwag.mensaminus.model.Canteen
+import com.bjwag.mensaminus.store.NfcMode
 import com.bjwag.mensaminus.store.SettingsStore
 import com.bjwag.mensaminus.store.UserSettings
 import com.bjwag.mensaminus.utils.CardReader
@@ -31,8 +32,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var showNfcBalanceDialog by mutableStateOf(false)
         private set
 
+    fun showNfcBalance() {
+        if (userSettings.value.lastScannedBalance != null) {
+            showNfcBalanceDialog = true
+        }
+    }
+
     fun dismissNfcBalanceDialog() {
         showNfcBalanceDialog = false
+    }
+
+    var showManualNfcScanDialog by mutableStateOf(false)
+        private set
+
+    fun startManualNfcScan() {
+        showManualNfcScanDialog = true
+    }
+
+    fun dismissManualNfcScan() {
+        showManualNfcScanDialog = false
     }
 
     private val _selectedDate = MutableStateFlow(LocalDate.now())
@@ -77,8 +95,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch { settingsStore.dismissHint(screen) }
     }
 
-    fun setNfcReaderEnabled(enabled: Boolean) {
-        viewModelScope.launch { settingsStore.setNfcReaderEnabled(enabled) }
+
+    fun setNfcMode(mode: NfcMode) {
+        viewModelScope.launch { settingsStore.setNfcMode(mode) }
     }
 
     fun setMorningMatchNotification(enabled: Boolean) {
@@ -91,6 +110,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val balance = CardReader.readBalance(tag)
                 if (balance != null) {
                     settingsStore.updateLastScannedBalance(balance)
+                    showManualNfcScanDialog = false
                     showNfcBalanceDialog = true
                 }
             } catch (e: Exception) {

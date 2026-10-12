@@ -220,5 +220,18 @@
     <string name="nfc_scan_success">Karte erfolgreich gelesen!</string>
     <string name="nfc_onboarding_title">Mensa-Guthaben</string>
     <string name="nfc_onboarding_desc">Du kannst Dein Mensa-Guthaben direkt in der App sehen, indem Du Deine Campuscard an die Rückseite Deines Handys hältst.</string>
+    <string name="nfc_mode_off">Aus</string>
+    <string name="nfc_mode_off_desc">NFC-Kartenleser ist deaktiviert.</string>
+    <string name="nfc_mode_manual">Auf Tippen</string>
+    <string name="nfc_mode_manual_desc">Liest die Karte nur nach Klick auf das Icon aus.</string>
+    <string name="nfc_mode_always">Immer aktiv</string>
+    <string name="nfc_mode_always_desc">Karte wird jederzeit automatisch gelesen, sobald die App geöffnet ist.</string>
+    <string name="nfc_manual_scan_title">Campuscard scannen</string>
+    <string name="nfc_manual_scan_desc">Halte Deine Campuscard jetzt an die Rückseite Deines Smartphones.</string>
+    <string name="nfc_help_dialog_title">NFC-Kartenleser Modi</string>
+    <string name="nfc_help_dialog_text">Warum gibt es verschiedene Modi?\n\n• Auf Tippen: Der Reader wird nur kurz aktiviert, wenn Du oben auf das Karten-Icon tippst.\n\n• Immer aktiv: Die Karte wird jederzeit automatisch erkannt.\n\n• Aus: Der Kartenleser ist deaktiviert.</string>
+    <string name="nfc_mode_select_title">NFC-Modus wählen</string>
+    <string name="nfc_info_mode_off_hint">Der NFC-Kartenleser ist aktuell deaktiviert. Möchtest Du einen Modus wählen?</string>
+    <string name="recommended">Empfohlen</string>
 
 </resources>

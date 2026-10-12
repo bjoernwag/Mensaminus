@@ -161,9 +161,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             MensaminusTheme {
-                // Monitor NFC setting to re-enable/disable dispatch
-                LaunchedEffect(settings.nfcReaderEnabled) {
-                    if (settings.nfcReaderEnabled) {
+                // Monitor NFC setting and manual scan dialog state to re-enable/disable dispatch
+                val isManualScanActive = mainViewModel.showManualNfcScanDialog
+                LaunchedEffect(settings.nfcMode, isManualScanActive) {
+                    val shouldEnable = settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.ALWAYS ||
+                        (settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.MANUAL && isManualScanActive)
+                    if (shouldEnable) {
                         enableNfcForegroundDispatch()
                     } else {
                         disableNfcForegroundDispatch()
@@ -231,9 +234,14 @@ class MainActivity : AppCompatActivity() {
     private fun enableNfcForegroundDispatch() {
         try {
             val settings = mainViewModel.userSettings.value
-            android.util.Log.d("MainActivity", "Enabling NFC Dispatch. Settings: ${settings.nfcReaderEnabled}, Adapter: ${nfcAdapter != null}")
-            if (settings.nfcReaderEnabled) {
+            val isManualScanActive = mainViewModel.showManualNfcScanDialog
+            val shouldEnable = settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.ALWAYS ||
+                (settings.nfcMode == com.bjwag.mensaminus.store.NfcMode.MANUAL && isManualScanActive)
+            // android.util.Log.d("MainActivity", "Enabling NFC Dispatch. ShouldEnable: $shouldEnable, Adapter: ${nfcAdapter != null}")
+            if (shouldEnable) {
                 nfcAdapter?.enableForegroundDispatch(this, pendingIntent, null, null)
+            } else {
+                nfcAdapter?.disableForegroundDispatch(this)
             }
         } catch (e: Exception) {
             android.util.Log.e("MainActivity", "Failed to enable NFC dispatch", e)
@@ -245,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             android.util.Log.d("MainActivity", "Disabling NFC Dispatch")
             nfcAdapter?.disableForegroundDispatch(this)
         } catch (e: Exception) {
-            // Ignore
+            // "we avoid this problem by ignoring it"
         }
     }
 

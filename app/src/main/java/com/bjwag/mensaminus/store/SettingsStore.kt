@@ -21,6 +21,10 @@ enum class DietaryPreference {
     // more to add?
 }
 
+enum class NfcMode {
+    OFF, MANUAL, ALWAYS
+}
+
 data class UserSettings(
     val priceGroup: PriceGroup = PriceGroup.STUDENT,
     val language: AppLanguage = if (java.util.Locale.getDefault().language == "de") AppLanguage.GERMAN else AppLanguage.ENGLISH,
@@ -37,10 +41,13 @@ data class UserSettings(
     val showOnboarding: Boolean = true,
     val dismissedHints: Set<String> = emptySet(),
     val keywordOverrides: Map<String, Int> = emptyMap(),
-    val nfcReaderEnabled: Boolean = false,
+    val nfcMode: NfcMode = NfcMode.MANUAL,
     val lastScannedBalance: Double? = null,
     val lastScanTimestamp: Long = 0L
-)
+) {
+    val nfcReaderEnabled: Boolean
+        get() = nfcMode != NfcMode.OFF
+}
 
 class SettingsStore(context: Context) {
     private val dataStore = context.dataStore
@@ -64,6 +71,7 @@ class SettingsStore(context: Context) {
         val SHOW_ONBOARDING = booleanPreferencesKey("show_onboarding")
         val DISMISSED_HINTS = stringSetPreferencesKey("dismissed_hints")
         val KEYWORD_OVERRIDES = stringPreferencesKey("keyword_overrides")
+        val NFC_MODE = stringPreferencesKey("nfc_mode")
         val NFC_READER_ENABLED = booleanPreferencesKey("nfc_reader_enabled")
         val LAST_SCANNED_BALANCE = doublePreferencesKey("last_scanned_balance")
         val LAST_SCAN_TIMESTAMP = longPreferencesKey("last_scan_timestamp")
@@ -112,6 +120,18 @@ class SettingsStore(context: Context) {
             emptyMap()
         }
 
+        val nfcMode = try {
+            val savedMode = preferences[NFC_MODE]
+            if (savedMode != null) {
+                NfcMode.valueOf(savedMode)
+            } else {
+                val legacyEnabled = preferences[NFC_READER_ENABLED]
+                if (legacyEnabled == true) NfcMode.ALWAYS else if (legacyEnabled == false) NfcMode.OFF else NfcMode.MANUAL
+            }
+        } catch (e: Exception) {
+            NfcMode.MANUAL
+        }
+
         UserSettings(
             priceGroup = priceGroup,
             language = language,
@@ -128,7 +148,7 @@ class SettingsStore(context: Context) {
             showOnboarding = preferences[SHOW_ONBOARDING] ?: true,
             dismissedHints = preferences[DISMISSED_HINTS] ?: emptySet(),
             keywordOverrides = overrides,
-            nfcReaderEnabled = preferences[NFC_READER_ENABLED] ?: false,
+            nfcMode = nfcMode,
             lastScannedBalance = preferences[LAST_SCANNED_BALANCE],
             lastScanTimestamp = preferences[LAST_SCAN_TIMESTAMP] ?: 0L
         )
@@ -255,8 +275,15 @@ class SettingsStore(context: Context) {
         }
     }
 
+    suspend fun setNfcMode(mode: NfcMode) {
+        dataStore.edit { preferences ->
+            preferences[NFC_MODE] = mode.name
+            preferences[NFC_READER_ENABLED] = (mode != NfcMode.OFF)
+        }
+    }
+
     suspend fun setNfcReaderEnabled(enabled: Boolean) {
-        dataStore.edit { it[NFC_READER_ENABLED] = enabled }
+        setNfcMode(if (enabled) NfcMode.ALWAYS else NfcMode.OFF)
     }
 
     suspend fun updateLastScannedBalance(balance: Double) {
